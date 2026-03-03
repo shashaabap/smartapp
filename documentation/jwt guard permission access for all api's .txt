@@ -1,0 +1,26 @@
+STEP 2 — HOW AUDIT IS USED (THIS IS THE PATTERN)
+
+This is the only thing you repeat in future, and it’s very small.
+
+🔐 Pattern for ANY secured API
+@UseGuards(JwtAuthGuard, PermissionGuard)
+@HasPermission('Invoice Entry', 'Add')
+@Post('invoice')
+async createInvoice(@Req() req) {
+
+  // 1️⃣ Business logic
+  const invoice = { id: 101 };
+
+  // 2️⃣ Audit (ONE LINE)
+  await this.auditService.log({
+    userId: req.user.userDbId, // numeric id
+    action: 'ADD',
+    entity: 'invoice',
+    entityId: invoice.id,
+    newValue: invoice,
+    ip: req.ip,
+    userAgent: req.headers['user-agent'],
+  });
+
+  return invoice;
+}

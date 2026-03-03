@@ -1,0 +1,94 @@
+cd D:\smartapp  ---go to this path and type cmd
+
+npx @nestjs/cli new backend  -- this will create folder backend in folder smartapp main folder and install other supporing files
+
+
+cd backend       
+npm run start:dev     ---Verify Backend Runs
+PFDYD300F96BRTDDTBL
+V0045
+
+
+D:\smartapp\backend\src -- inside this folder create 2 below files
+
+database/
+  ├── database.module.ts
+  └── database.service.ts
+
+
+✅ STEP 2️⃣ Add Centralized DB Connection (PostgreSQL)
+1. Install dependency
+npm install pg @nestjs/config
+
+
+in the folder D:\smartapp\backend run these below commands to Create Auth Module and other classes:
+
+nest g module auth
+nest g controller auth
+nest g service auth
+npm install class-validator class-transformer
+npm install jsonwebtoken
+
+now do overwrite the below file from current backend folder files 
+"D:\smartapp\backend\src\database\database.module.ts"
+"D:\smartapp\backend\src\database\database.service.ts"
+"D:\smartapp\backend\src\app.module.ts"
+"D:\smartapp\backend\src/auth/dto/login.dto.ts"
+"D:\smartapp\backend\src\auth\auth.service.ts"
+"D:\smartapp\backend\src\auth\auth.controller.ts"
+
+create and overwrite new file from current files this is centralised file for database connection: 
+"D:\smartapp\backend\.env"
+
+
+— Add JWT Guard + Auth Middleware (Clean & Proper) in the path D:\smartapp\backend 
+npm install @nestjs/jwt passport passport-jwt
+npm install -D @types/passport-jwt
+nest g guard auth/jwt
+Create file manually and copy paste the code from current file from project: src/auth/jwt.strategy.ts 
+Overwrite the code of this below file from projects current file:
+src/auth/auth.module.ts
+
+Create JWT Auth Guard: src/auth/guards/jwt-auth.guard.ts use this file content
+
+take the current code of this file src/app.controller.ts
+
+
+Implementing the /auth/me Endpoint to refresh the page using JWT (Token exists but user context is lost)
+get the latest "D:\smartapp\backend\src\auth\auth.service.ts" -- code in the lst start with async getMe(userId: number)
+get the latest D:\smartapp\backend\src\auth\auth.controller.ts 
+
+
+--Implementing the Permission Enforcement Helper (Backend RBAC) --this will prevent user to bypass the UI and do the entry from backend if buttons are hide and permissions are not there
+src/auth/permission.service.ts --this is new file available in project
+src/auth/decorators/has-permission.decorator.ts --this is new file available in project
+src/auth/guards/permission.guard.ts--this is new file available in project
+auth.module.ts  --update this file and add the     PermissionService,PermissionGuard,
+
+
+--Create Audit Module 
+D:\smartapp\backend>nest g module audit
+create the copy files D:\smartapp\backend\src\audit from project
+update auth.service.ts as current and add login success and login failed logs code
+
+
+--Audit logging for business APIs (will be helpful to generate audit data for financial data approval processes)			--pending
+will do it later but for sure once some api's will get developed
+
+--ADMIN BYPASS (Creating the system to bypass the PermissionGuard for specific user ADMINUSER)
+Do changes in permission.guard.ts and add the code      
+ // 🔓 ADMIN BYPASS
+  if (userId === 'ADMINUSER') {
+    return true;
+  }
+
+--Install Redis
+npm install ioredis
+
+--src/redis add this folder and files and update the permission and other files app.module.ts
+
+--Install cookies
+npm install cookie-parser
+npm install --save-dev @types/cookie-parser
+npm audit fix
+

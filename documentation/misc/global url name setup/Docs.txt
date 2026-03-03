@@ -1,0 +1,13 @@
+1)Hosts file : Add the server name in the hosts file:
+ C:\Windows\System32\drivers\etc\hosts(Hosts file is available in this folder for reference)
+2)Maintain the ip/name in D:\smartapp\backend\src\main.ts
+3)db credentials in D:\smartapp\backend\.env
+
+4)URL in D:\smartapp\frontend\.env.local
+5)set the  "dev": "next dev -H filatex.smartapp.com" in D:\smartapp\frontend\package.json
+6)D:\smartapp\frontend\next.config.ts
+7)local host path here in D:\smartapp\frontend\lib\config.ts
+
+this below file is for smartapp.com name only and not he prefix like filatex
+8)D:\smartapp\frontend\lib\auth.ts
+9)D:\smartapp\frontend\app\api\auth\bootstrap\route.ts

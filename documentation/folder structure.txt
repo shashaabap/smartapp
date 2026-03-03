@@ -1,0 +1,31 @@
+D:\smartapp
+│
+├── frontend/        ← React / Next.js (already exists ✅)
+│
+├── backend/         ← NestJS API (we will create this)
+│   ├── src/
+│   │   ├── app.module.ts
+│   │   ├── main.ts
+│   │   │
+│   │   ├── database/
+│   │   │   ├── database.module.ts
+│   │   │   └── database.service.ts
+│   │   │
+│   │   ├── auth/
+│   │   │   ├── auth.module.ts
+│   │   │   ├── auth.controller.ts
+│   │   │   ├── auth.service.ts
+│   │   │   └── dto/
+│   │   │       └── login.dto.ts
+│   │   │
+│   │   └── common/
+│   │       ├── guards/
+│   │       ├── decorators/
+│   │       └── interfaces/
+│   │
+│   ├── .env
+│   ├── package.json
+│   └── tsconfig.json
+│
+├── .gitignore
+└── README.md

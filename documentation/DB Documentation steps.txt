@@ -1,0 +1,102 @@
+🔹 Step 1: Download PostgreSQL (Official)
+
+👉 Go to the official site:
+https://www.postgresql.org/download/windows/
+
+Choose:
+
+Windows x86-64
+
+Installer by EDB (EnterpriseDB)
+
+⚠️ Avoid third-party bundles.
+
+🔹 Step 2: Run the Installer (Important Choices)
+
+During setup, you’ll see multiple screens.
+
+✔ Select Components
+
+✅ PostgreSQL Server
+✅ pgAdmin 4
+✅ Command Line Tools
+❌ Stack Builder (optional – skip for now)
+
+
+✔ Set Superuser Password
+
+This is for the postgres user.
+
+📌 Choose something strong and SAVE it
+Example:
+
+superuser -- I have set this for my Postgres
+
+✔ Port
+
+Default:
+
+5432
+
+🔹 Step 4: Open pgAdmin 4
+
+Launch pgAdmin 4
+
+It opens in browser (localhost)
+
+Login with:
+
+Username: postgres
+
+Password: (the one you set)-->sha@1981
+
+🔹 Step 5: Create Database for SmartApp
+
+In pgAdmin:
+
+Right-click Databases
+
+Click Create → Database
+
+Database name: smartapp_db
+Owner: postgres
+
+Step 7: Create a Dedicated App User (Best Practice)
+CREATE USER smartapp_user WITH PASSWORD 'SmartApp@123';
+ALTER USER smartapp_user CREATEDB;
+
+
+GRANT ALL ON SCHEMA public TO smartapp_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+GRANT ALL ON TABLES TO smartapp_user;
+
+
+GRANT USAGE, CREATE ON SCHEMA public TO smartapp_user;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+GRANT ALL ON TABLES TO smartapp_user;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+GRANT ALL ON SEQUENCES TO smartapp_user;
+
+ALTER SCHEMA public OWNER TO smartapp_user;
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+🔹 Step 8: Connect Using New User
+
+In pgAdmin:
+
+Register → Server
+
+Use:
+
+Host: localhost
+
+Port: 5432
+
+DB: smartapp_db
+
+User: smartapp_user
+
+Password: SmartApp@123

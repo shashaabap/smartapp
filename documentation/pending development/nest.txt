@@ -1,0 +1,16 @@
+What Those 4 Items Are
+Feature	Priority Now?	Why
+Cache sidebar navigation	🟡 Optional	UX improvement
+Redis session invalidation	🟡 Later	Needed for logout-all, not critical now
+Distributed rate limiting	🟡 Later	Needed when traffic increases
+Auto permission invalidation	🟢 Important later	Only needed when admin starts editing roles
+
+
+
+const canSave = usePermission('save')
+
+{canSave && <button>Save</button>}
+Clean. Reusable. Enterprise-ready.
+
+
+So adding PermissionsGuard now would be premature.  --This will be done once the business modules like Student master get created
