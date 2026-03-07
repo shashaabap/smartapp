@@ -24,9 +24,14 @@ VALUES
 ('default', 'Default Tenant', 1),
 ('filatex', 'Filatex India Ltd', 1),
 ('ra_bhageria', 'RA Bhageria Trust', 1);
-
+SELECT *FROM clients
 --LOCATIONS (Schools / Offices / Plants)
 DROP TABLE IF EXISTS locations CASCADE;
+
+UPDATE clients
+SET client_code='rabhageriaedu'
+where id=3
+select * From clients
 
 CREATE TABLE locations (
     id BIGSERIAL PRIMARY KEY,
@@ -45,7 +50,7 @@ CREATE TABLE locations (
     city    VARCHAR(50),
     zip     VARCHAR(20),
     address VARCHAR(255),
-
+   
     created_by BIGINT NOT NULL,
     created_dt TIMESTAMP NOT NULL DEFAULT NOW(),
     modified_by BIGINT,
@@ -68,7 +73,7 @@ ON locations
 USING (client_id = current_setting('app.client_id')::bigint);
 
 
-
+select *From locations
 
 INSERT INTO locations
 (client_id, location_code, location_name, parent_location_id, status, country, state, city, address, created_by)
@@ -84,7 +89,15 @@ FROM clients c
 JOIN locations l ON l.location_code='DELHI_HO'
 WHERE c.client_code='filatex';
 
+INSERT INTO locations
+SELECT c.id, 'RA_BHAGE', 'R.A. Bhageria Educational Academy', NULL, 1,
+       'INDIA','GUJARAT','BHARUCH','EKSAL, DAHEJ',1
+FROM clients c WHERE client_code='rabhageriaedu';
 
+UPDATE locations
+SET zip='392130',parent_location_id=3
+where id=3
+SELECT *fROM locations
 --USERS
 DROP TABLE IF EXISTS users CASCADE;
 
@@ -122,6 +135,8 @@ CREATE TABLE users (
     CONSTRAINT uq_user_client UNIQUE (client_id, user_code)
 );
 
+
+select *from users
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY users_isolation
@@ -145,6 +160,16 @@ SELECT c.id, 'superuser','Super User',
        crypt('123@abc', gen_salt('bf',12)),
        1, NOW(), 1
 FROM clients c WHERE client_code='filatex';
+
+
+INSERT INTO users
+(client_id, user_code, user_name, user_pw, status, effective_fr, created_by)
+SELECT c.id, 'schooladmin','School Admin',
+       crypt('123@abc', gen_salt('bf',12)),
+       1, NOW(), 1
+FROM clients c WHERE client_code='rabhageriaedu';
+
+select *from users
 
 --ROLES
 DROP TABLE IF EXISTS roles CASCADE;
@@ -186,6 +211,11 @@ SELECT c.id,'super','Super Role',1,1
 FROM clients c WHERE client_code='filatex';
 
 
+INSERT INTO roles (client_id, role_code, role_name, status, created_by)
+SELECT c.id,'schooladminrole','School Admin Role',1,1
+FROM clients c WHERE client_code='rabhageriaedu';
+
+
 --USER ↔ ROLE MAPPING
 DROP TABLE IF EXISTS users_roles_mapping CASCADE;
 
@@ -222,6 +252,9 @@ ALTER TABLE users_roles_mapping ENABLE ROW LEVEL SECURITY;
 CREATE POLICY tenant_isolation_users_roles_mapping
 ON users_roles_mapping
 USING (client_id = current_setting('app.client_id')::bigint);
+CREATE INDEX idx_urm_user_default
+ON users_roles_mapping(user_id)
+WHERE default_role = TRUE AND status = 1;
 
 INSERT INTO users_roles_mapping
 (client_id, user_id, role_id, default_role, status, created_by)
@@ -232,9 +265,18 @@ JOIN users u ON u.user_code='adminuser'
 JOIN roles r ON r.role_code='admin'
 WHERE c.client_code='filatex';
 
-CREATE INDEX idx_urm_user_default
-ON users_roles_mapping(user_id)
-WHERE default_role = TRUE AND status = 1;
+
+
+INSERT INTO users_roles_mapping
+(client_id, user_id, role_id, default_role, status, created_by)
+SELECT
+    c.id, u.id, r.id, TRUE, 1, 1
+FROM clients c
+JOIN users u ON u.user_code='schooladmin'
+JOIN roles r ON r.role_code='schooladminrole'
+WHERE c.client_code='rabhageriaedu';
+
+rabhageriaedu
 
 --USER ↔ LOCATION MAPPING
 DROP TABLE IF EXISTS users_locations_mapping CASCADE;
@@ -281,6 +323,17 @@ FROM clients c
 JOIN users u ON u.user_code='adminuser'
 JOIN locations l ON l.location_code='DELHI_HO'
 WHERE c.client_code='filatex';
+
+
+INSERT INTO users_locations_mapping
+(client_id, user_id, location_id, default_location, created_by)
+SELECT c.id, u.id, l.id, TRUE, 1
+FROM clients c
+JOIN users u ON u.user_code='schooladmin'
+JOIN locations l ON l.location_code='RA_BHAGE'
+WHERE c.client_code='rabhageriaedu';
+
+
 
 --AUDIT LOG (TENANT-AWARE)
 DROP TABLE IF EXISTS audit_log CASCADE;

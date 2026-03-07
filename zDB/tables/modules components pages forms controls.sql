@@ -23,6 +23,14 @@ INSERT INTO modules (module_code,module_name, description, created_by)
 VALUES
 ('admin','Administration', 'Administration', 1);
 
+
+
+INSERT INTO modules (module_code,module_name, description, created_by)
+VALUES
+('admission','Admission', 'Admission', 1);
+
+
+
 select *From modules
 --Sub-Modules
 DROP TABLE IF EXISTS sub_modules CASCADE;
@@ -55,6 +63,12 @@ CREATE TABLE sub_modules (
 INSERT INTO sub_modules (module_id, sub_module_code,sub_module_name, description, created_by)
 SELECT id,'user_mgmt','User Mgmt. & Access',  'User Management & Access Rights', 1
 FROM modules WHERE module_code = 'admin';
+
+
+INSERT INTO sub_modules (module_id, sub_module_code,sub_module_name, description, created_by)
+SELECT id,'admi_mgmt','Admission Management',  'Admission Management', 1
+FROM modules WHERE module_code = 'admission';
+
 
 select *from sub_modules
 
@@ -107,14 +121,14 @@ INSERT INTO pages
 (sub_module_id, page_code, page_name, description, route, api_base_path, created_by)
 SELECT
     id,
-    'user_master',
-    'User Master',
-    'User Master',
-    '/user-master',
-    '/api/admin/users',
+    'admission_form',
+    'Admission Form',
+    'Admission Form',
+    '/admi_form',
+    '/api/admission/admi_form',
     1
 FROM sub_modules
-WHERE sub_module_code = 'user_mgmt';
+WHERE sub_module_code = 'admi_mgmt';
 
 select *from pages
 --FORMS (UI COMPOSITION ONLY – NO SECURITY)
@@ -174,6 +188,22 @@ SELECT
 FROM pages
 WHERE page_code = 'user_master';
 
+
+INSERT INTO forms
+(page_id, form_code, form_name, form_type, render_mode, display_order, created_by)
+SELECT
+    id,
+    'admission_form_main',
+    'Admission Form',
+    'MAIN',
+    'EMBEDDED',
+    1,
+    1
+FROM pages
+WHERE page_code = 'admission_form';
+
+
+
 select *From forms
 
 --CONTROLS (Atomic Permissions)
@@ -210,6 +240,14 @@ VALUES  ('view','View', 'Button', 1, 1),
  ('authorise','Authorise', 'Button', 5, 1),
  ('delete','Delete', 'Button', 6, 1),
  ('generate','Generate', 'Button', 7, 1);
+
+
+ INSERT INTO controls
+(control_code,control_name, control_type, display_order, created_by)
+VALUES  ('submit','Submit', 'Button', 1, 1),
+('approve','Approve', 'Button', 2, 1),
+ ('reject','Reject', 'Button', 3, 1)
+
  
 --PAGE ↔ CONTROL MAPPING
 select *from controls
@@ -246,6 +284,15 @@ JOIN controls c ON c.control_code = 'save'
 WHERE p.page_code = 'user_master';
 --ROLE → PAGE ACCESS (Navigation Security)
 
+
+INSERT INTO page_controls (page_id, control_id, status)
+SELECT p.id, c.id, 1
+FROM pages p
+JOIN controls c ON c.control_code = 'submit'
+WHERE p.page_code = 'admission_form';
+
+
+
 select *From role_page_access
 
 
@@ -271,6 +318,13 @@ CREATE TABLE role_page_access (
 
     CONSTRAINT uq_role_page UNIQUE (role_id, page_id)
 );
+CREATE INDEX idx_role_page_access_role ON role_page_access(role_id);
+
+CREATE INDEX idx_rpa_role_page_access
+ON role_page_access(role_id, page_id)
+WHERE can_access = TRUE;
+
+
 INSERT INTO role_page_access (role_id,client_id, page_id)
 SELECT r.id,r.client_id, p.id
 FROM roles r
@@ -278,11 +332,17 @@ JOIN pages p ON p.page_code = 'user_master'
 WHERE r.role_code = 'admin'
 ON CONFLICT (role_id, page_id) DO NOTHING;
 select *From role_page_access
-CREATE INDEX idx_role_page_access_role ON role_page_access(role_id);
 
-CREATE INDEX idx_rpa_role_page_access
-ON role_page_access(role_id, page_id)
-WHERE can_access = TRUE;
+select *From pages
+
+INSERT INTO role_page_access (role_id,client_id, page_id)
+SELECT r.id,r.client_id, p.id
+FROM roles r
+JOIN pages p ON p.page_code = 'admission_form'
+WHERE r.role_code = 'schooladminrole'
+ON CONFLICT (role_id, page_id) DO NOTHING;
+
+
 
 --ROLE → PAGE → CONTROL ACCESS (Final Permission Layer)
 DROP TABLE IF EXISTS role_page_control_access CASCADE;
@@ -326,6 +386,17 @@ FROM roles r
 JOIN pages p    ON p.page_code = 'user_master'
 JOIN controls c ON c.control_code = 'save'
 WHERE r.role_code = 'admin';
+
+
+INSERT INTO role_page_control_access (role_id,client_id, page_id, control_id)
+SELECT
+    r.id,r.client_id,    p.id,    c.id
+FROM roles r
+JOIN pages p    ON p.page_code = 'admission_form'
+JOIN controls c ON c.control_code = 'approve'
+WHERE r.role_code = 'schooladminrole';
+
+
 SELECT *fROM role_page_control_access
 
 DROP TABLE IF EXISTS page_status_master CASCADE;
@@ -344,12 +415,20 @@ CREATE TABLE page_status_master (
         REFERENCES pages(id)
         ON DELETE CASCADE
 );
-
+select *from page_status_master
 INSERT INTO page_status_master VALUES
 (1, 0, 'DRAFT',   'User draft'),
 (1, 1, 'ACTIVE',  'Active user'),
 (1, 2, 'LOCKED',  'Locked due to security'),
 (1, 3, 'INACTIVE','Inactive user'); 
+
+INSERT INTO page_status_master VALUES
+(2, 0, 'DRAFT',   'Draft'),
+(2, 1, 'SUBMITTED',  'Submitted'),
+(2, 2, 'APPROVED',  'Approved'),
+(2, 3, 'REJECTED','Rejected'); 
+
+
 select *From page_status_master
 --FINAL ARCHITECTURE (LOCK THIS)
 /*
@@ -405,9 +484,10 @@ SELECT
     1           -- created_by
 FROM forms f
 JOIN pages p    ON p.id = f.page_id
-JOIN controls c ON c.control_code = 'save'
-WHERE p.page_code = 'user_master'
-  AND f.form_code = 'user_master_main';
+JOIN controls c ON c.control_code = 'submit'
+WHERE p.page_code = 'admission_form'
+  AND f.form_code = 'admission_form_main';
+select *from forms
 
 
 /*

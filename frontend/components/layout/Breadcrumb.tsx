@@ -9,9 +9,9 @@ export default function Breadcrumb() {
 
   if (!auth?.menu) return null
 
-  for (const module of auth.menu) {
-    for (const sub of module.sub_modules) {
-      for (const page of sub.pages) {
+  for (const module of auth.menu || []) {
+    for (const sub of module.sub_modules || []) {
+      for (const page of sub.pages || []) {
         if (page.route === pathname) {
           return (
             <div className="mb-4 text-sm text-gray-600">
