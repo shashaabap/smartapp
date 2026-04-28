@@ -1,0 +1,9 @@
+go the smarapp folder and open cmd
+
+
+--For pushing the code
+D:\smartapp>git add .
+D:\smartapp>git commit -m "multiUrl"
+D:\smartapp>git push origin main
+
+--

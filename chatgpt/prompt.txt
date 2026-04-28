@@ -1,0 +1,460 @@
+Dear Chatgpt, 
+Please see my navigation hierarchy for the schoolapp web application we are trying to develop
+we have created modules,submodules,pages,forms,controls,clients,locations,users,roles,user_role_mapping, user_page_mapping,user_forms_mapping,users_forms_controls_mapping tables and in postgresql
+users login thin api in nest and user login ui already prepared in next and working fine with jwt
+SchoolApp - 3-Level Navigation Structure
+MODULE 1: DASHBOARD
+text
+dashboard
+├── admin-dashboard
+│   ├── overview
+│   ├── quick-stats
+│   └── pending-tasks
+├── teacher-dashboard
+│   ├── my-classes
+│   ├── pending-work
+│   └── today-schedule
+├── student-dashboard
+│   ├── my-profile
+│   ├── fee-status
+│   └── attendance-summary
+└── parent-dashboard
+    ├── ward-profile
+    ├── ward-fees
+    └── ward-attendance
+MODULE 2: ADMINISTRATION
+text
+administration
+├── user-management
+│   ├── users
+│   ├── roles
+│   └── permissions
+├── authentication
+│   ├── login
+│   ├── registration
+│   └── password-reset
+├── security
+│   ├── login-logs
+│   ├── sessions
+│   └── api-logs
+└── audit
+    └── audit-logs
+MODULE 3: SETUP & CONFIGURATION
+text
+setup
+├── school-profile
+│   ├── institution-details
+│   ├── logo
+│   └── contact-info
+├── academic-setup
+│   ├── academic-years
+│   ├── classes
+│   ├── sections
+│   └── subjects
+├── master-data
+│   ├── master-types
+│   ├── master-values
+│   └── document-types
+├── numbering-series
+│   └── auto-numbers
+└── system-settings
+    ├── general
+    ├── email
+    └── sms
+MODULE 4: ADMISSION
+text
+admission
+├── application
+│   ├── admission-form
+│   ├── online-applications
+│   └── form-status
+├── review-process
+│   ├── application-review
+│   ├── approval
+│   └── rejection
+├── entrance-test
+│   ├── test-scores
+│   ├── results
+│   └── merit-list
+├── waiting-list
+│   ├── waitlist
+│   └── backup-applicants
+└── reports
+    └── admission-statistics
+MODULE 5: STUDENTS
+text
+students
+├── student-records
+│   ├── student-list
+│   ├── add-student
+│   ├── edit-student
+│   └── delete-student
+├── student-profiles
+│   ├── personal-details
+│   ├── guardian-info
+│   └── contact-details
+├── documents
+│   ├── photos
+│   ├── certificates
+│   └── id-proofs
+├── medical
+│   ├── health-records
+│   ├── allergies
+│   └── vaccinations
+├── transfer
+│   ├── tc-issue
+│   └── tc-records
+└── alumni
+    └── alumni-list
+MODULE 6: STAFF/HR
+text
+hr
+├── staff-records
+│   ├── staff-list
+│   ├── add-staff
+│   ├── edit-staff
+│   └── delete-staff
+├── staff-profiles
+│   ├── personal-details
+│   ├── contact-info
+│   └── job-details
+├── documents
+│   ├── contracts
+│   ├── id-proofs
+│   └── certificates
+├── attendance
+│   ├── mark-attendance
+│   ├── attendance-report
+│   └── corrections
+├── leave
+│   ├── apply-leave
+│   ├── approve-leave
+│   ├── leave-balance
+│   └── leave-history
+├── payroll
+│   ├── salary-structure
+│   ├── generate-payroll
+│   ├── salary-slips
+│   └── reimbursement
+├── performance
+│   ├── appraisals
+│   └── feedback
+└── recruitment
+    ├── job-postings
+    ├── applications
+    └── interview-schedule
+MODULE 7: ACADEMICS
+text
+academics
+├── classes
+│   ├── class-list
+│   ├── create-class
+│   └── class-teacher
+├── sections
+│   ├── section-list
+│   └── create-section
+├── subjects
+│   ├── subject-list
+│   └── create-subject
+├── curriculum
+│   ├── syllabus
+│   ├── lesson-plans
+│   └── topics
+├── timetable
+│   ├── master-timetable
+│   ├── class-schedule
+│   ├── teacher-schedule
+│   └── substitutions
+├── homework
+│   ├── assign-homework
+│   ├── submissions
+│   └── homework-status
+└── promotion
+    └── promote-students
+MODULE 8: ATTENDANCE
+text
+attendance
+├── student-attendance
+│   ├── mark-attendance
+│   ├── bulk-attendance
+│   └── attendance-correction
+├── staff-attendance
+│   ├── mark-attendance
+│   ├── bulk-attendance
+│   └── attendance-correction
+├── biometric
+│   ├── device-logs
+│   ├── sync-data
+│   └── device-management
+├── reports
+│   ├── daily-summary
+│   ├── monthly-summary
+│   └── percentage-reports
+└── adjustments
+    └── leave-adjustments
+MODULE 9: FEES & FINANCE
+text
+fees
+├── fee-heads
+│   ├── fee-types
+│   ├── create-head
+│   └── manage-heads
+├── fee-structure
+│   ├── class-wise-fees
+│   ├── create-structure
+│   └── edit-structure
+├── collection
+│   ├── collect-fee
+│   ├── receipt-print
+│   ├── online-payments
+│   └── payment-history
+├── discounts
+│   ├── scholarships
+│   ├── concessions
+│   └── apply-discount
+├── refunds
+│   ├── process-refund
+│   └── refund-history
+└── reports
+    ├── collection-summary
+    ├── fee-dues
+    ├── daily-collection
+    └── monthly-collection
+MODULE 10: EXAMINATIONS
+text
+exams
+├── exam-setup
+│   ├── exam-types
+│   ├── create-exam
+│   └── manage-exams
+├── schedule
+│   ├── exam-timetable
+│   ├── date-sheet
+│   └── room-allocation
+├── marks
+│   ├── enter-marks
+│   ├── edit-marks
+│   └── marks-verification
+├── grades
+│   ├── grade-scale
+│   └── grade-definition
+├── results
+│   ├── calculate-results
+│   ├── rank-generation
+│   └── result-publication
+└── report-cards
+    ├── generate-cards
+    ├── print-cards
+    └── download-cards
+MODULE 11: TRANSPORT
+text
+transport
+├── vehicles
+│   ├── vehicle-list
+│   ├── add-vehicle
+│   ├── edit-vehicle
+│   └── maintenance
+├── routes
+│   ├── route-list
+│   ├── create-route
+│   └── edit-route
+├── stops
+│   ├── stop-list
+│   └── manage-stops
+├── allocation
+│   ├── assign-route
+│   ├── student-transport
+│   └── route-map
+└── drivers
+    ├── driver-list
+    ├── add-driver
+    └── assign-driver
+MODULE 12: LIBRARY
+text
+library
+├── books
+│   ├── book-list
+│   ├── add-book
+│   ├── edit-book
+│   └── delete-book
+├── categories
+│   └── book-categories
+├── issue
+│   ├── issue-book
+│   ├── return-book
+│   └── current-issues
+└── fines
+    ├── collect-fine
+    ├── fine-rules
+    └── fine-history
+MODULE 13: INVENTORY
+text
+inventory
+├── items
+│   ├── item-list
+│   ├── add-item
+│   ├── edit-item
+│   └── delete-item
+├── purchases
+│   ├── purchase-order
+│   ├── receive-items
+│   └── purchase-history
+├── suppliers
+│   ├── supplier-list
+│   ├── add-supplier
+│   └── edit-supplier
+├── stock
+│   ├── current-stock
+│   ├── stock-alerts
+│   └── stock-history
+└── issues
+    ├── issue-item
+    ├── return-item
+    └── issue-history
+MODULE 14: COMMUNICATION
+text
+communication
+├── notices
+│   ├── create-notice
+│   ├── notice-board
+│   └── manage-notices
+├── announcements
+│   ├── create-announcement
+│   └── announcement-list
+├── sms
+│   ├── send-sms
+│   ├── bulk-sms
+│   └── sms-history
+├── email
+│   ├── send-email
+│   ├── bulk-email
+│   └── email-history
+└── parent-communication
+    ├── direct-messages
+    └── message-history
+MODULE 15: REPORTS
+text
+reports
+├── student-reports
+│   ├── student-list
+│   ├── student-profiles
+│   ├── attendance-reports
+│   └── fee-reports
+├── academic-reports
+│   ├── class-performance
+│   ├── exam-results
+│   └── progress-reports
+├── staff-reports
+│   ├── staff-list
+│   ├── attendance-reports
+│   └── payroll-reports
+├── financial-reports
+│   ├── collection-reports
+│   ├── due-reports
+│   └── expense-reports
+└── analytics
+    ├── dashboards
+    ├── charts
+    └── key-metrics
+MODULE 16: OPERATIONS
+text
+operations
+├── hostel
+│   ├── hostels
+│   ├── rooms
+│   ├── allocations
+│   └── hostel-fees
+├── canteen
+│   ├── menu
+│   ├── orders
+│   ├── wallets
+│   └── sales
+├── gate-security
+│   ├── visitors
+│   ├── vehicle-entries
+│   ├── courier
+│   └── gate-logs
+└── events
+    ├── create-event
+    ├── manage-events
+    ├── participants
+    └── event-reports
+MODULE 17: DOCUMENT MANAGEMENT
+text
+documents
+├── student-documents
+│   ├── photos
+│   ├── certificates
+│   └── mark-sheets
+├── staff-documents
+│   ├── contracts
+│   ├── id-proofs
+│   └── qualifications
+├── general-documents
+│   ├── policies
+│   ├── circulars
+│   └── minutes
+├── upload
+│   ├── file-upload
+│   ├── image-upload
+│   └── bulk-upload
+└── verification
+    ├── pending
+    ├── verified
+    └── rejected
+MODULE 18: GRIEVANCE & SUPPORT
+text
+grievance
+├── complaints
+│   ├── new-complaint
+│   ├── assigned
+│   ├── investigation
+│   ├── resolved
+│   └── closed
+├── discipline
+│   ├── incidents
+│   ├── inquiries
+│   ├── warnings
+│   └── penalties
+└── helpdesk
+    ├── create-ticket
+    ├── my-tickets
+    ├── assigned-tickets
+    └── ticket-status
+MODULE 19: INTEGRATIONS
+text
+integrations
+├── payment-gateways
+│   ├── razorpay
+│   ├── stripe
+│   └── paytm
+├── sms-gateways
+│   ├── twilio
+│   ├── msg91
+│   └── other-providers
+├── email-gateways
+│   ├── smtp
+│   ├── sendgrid
+│   └── other-providers
+└── biometric
+    └── device-integration
+MODULE 20: SYSTEM
+text
+system
+├── scheduled-jobs
+│   ├── cron-jobs
+│   ├── queues
+│   └── job-history
+├── search
+│   ├── global-search
+│   └── search-history
+├── storage
+│   ├── files
+│   ├── images
+│   └── backups
+└── backups
+    ├── database-backup
+    ├── file-backup
+    └── restore
+
+in this navigation i am not happy as some of the pages like classs etc are not organised manner and mixed in setup and academics, I need your opinion to reorganise them in a best possible way and please guide us for all the modules 

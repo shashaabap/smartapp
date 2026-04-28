@@ -23,7 +23,7 @@ INSERT INTO clients (client_code, client_name, status)
 VALUES
 ('default', 'Default Tenant', 1),
 ('filatex', 'Filatex India Ltd', 1),
-('ra_bhageria', 'RA Bhageria Trust', 1);
+('rabhageriaedu', 'RA Bhageria Trust', 1);
 SELECT *FROM clients
 --LOCATIONS (Schools / Offices / Plants)
 DROP TABLE IF EXISTS locations CASCADE;
